@@ -1,0 +1,58 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="container mt-5">
+
+    <div class="row d-flex justify-content-center">
+
+        <div class="col-md-7">
+
+            <div class="card p-3 py-4">
+
+                <div class="text-center">
+                    <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" width="100" class="rounded-circle">
+                </div>
+
+                <div class="text-center mt-3">
+                    <h5 class="mt-2 mb-0">@ViewBag.Username</h5>
+
+                    <div class="px-4 mt-1">
+                        <p class="fonts">Email: @ViewBag.Email</p>
+                    </div>
+
+                    <div class="px-4 mt-1">
+                        <p class="fonts">User id: @ViewBag.UserId</p>
+                    </div>
+
+                    <div class="buttons">
+                        @* Buton pentru logout *@
+                        <form method="post" action="@Url.Action("Logout", "User")">
+                            <button type="submit" class="btn btn-primary px-4 ms-3">Sign Out</button>
+                        </form>
+
+                        @* Form pentru schimbare email *@
+                        <form method="post" action="@Url.Action("ChangeEmail", "User")">
+                            <input type="email" name="newEmail" placeholder="New Email" required />
+                            <button type="submit" class="btn btn-primary px-4 ms-3" >Change Email</button>
+                        </form>
+
+                        @* Form pentru stergerea contului *@
+                        <form method="post" action="@Url.Action("DeleteUser", "User")">
+                            <button type="submit" class="btn btn-primary px-4 ms-3">Delete User</button>
+                        </form>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

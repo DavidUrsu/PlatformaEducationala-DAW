@@ -1,7 +1,15 @@
+using Microsoft.EntityFrameworkCore;
+using PlatformaEducationala_DAW.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<PlatformaDbContext>(options =>
+{
+    options.UseSqlServer("Server=(localdb)\\PlatformaEducationalaDB;Database=PlatformaEducationala;Trusted_Connection=True;TrustServerCertificate=True;");
+});
 
 var app = builder.Build();
 
