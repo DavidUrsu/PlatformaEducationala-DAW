@@ -1,21 +1,28 @@
-﻿Adaugat:
-- DbContext => PlatformaDbContext
-- Baza de date
-- Controller User
-- View pentru Login, Register si Index User
+﻿Course:
+Relatie one to many catre User
+Un curs are un profesor care este un user
+Un user poate fi profesor la mai multe cursuri
+Daca UserId din cookie este la fel ca professorUserId atunci se adauga un buton care poate edita cursul
+Daca pretul redus este mai mic decat pretul normal atunci apare reducerea
 
-Register View:
-La inregistrare verific cu LINQ daca exista deja un user cu username-ul specificat
-Verific daca exista un user cu email-ul specificat
-Parola trece prin SHA256
-Setez cookie-ul de autentificare
+CreateCourse:
+Se verifica daca userul este logat
+Se introduc detaliile
+Data se seteaza automat in constructor
+ProfessorUserId se preia din cookie
+
+CourseEdit:
+Se verifica daca userul este logat
+Se verifica daca userul este profesorul care a creat cursul
+Se pot edita detaliile
+Se poate sterge cursul
+
+Adaugare in header:
+Link catre pagina de user
+Link catre pagina de cursuri
 
 User Index:
-Trimit datele userului logat prin ViewBag
-Adaug un buton de logout si de schimbare a email-ului si de delete account
-La schimbarea email-ului verific daca exista deja un user cu email-ul specificat
-La logout si delete account sterg cookie-ul de autentificare
+Link catre create course
 
-Login View:
-Verific daca exista userul cu username-ul si parola specificate
-Setez cookie-ul de autentificare
+Buton de register in pagina de login
+Buton de login in pagina de register

@@ -27,22 +27,32 @@
                         <p class="fonts">User id: @ViewBag.UserId</p>
                     </div>
 
+                    <style>
+                        .form-spacer {
+                            margin-bottom: 20px;
+                        }
+                    </style>
+
                     <div class="buttons">
                         @* Buton pentru logout *@
-                        <form method="post" action="@Url.Action("Logout", "User")">
+                        <form method="post" action="@Url.Action("Logout", "User")" class="form-spacer">
                             <button type="submit" class="btn btn-primary px-4 ms-3">Sign Out</button>
                         </form>
 
                         @* Form pentru schimbare email *@
-                        <form method="post" action="@Url.Action("ChangeEmail", "User")">
+                        <form method="post" action="@Url.Action("ChangeEmail", "User")"  class="form-spacer">
                             <input type="email" name="newEmail" placeholder="New Email" required />
                             <button type="submit" class="btn btn-primary px-4 ms-3" >Change Email</button>
                         </form>
 
                         @* Form pentru stergerea contului *@
-                        <form method="post" action="@Url.Action("DeleteUser", "User")">
-                            <button type="submit" class="btn btn-primary px-4 ms-3">Delete User</button>
+                        <form method="post" action="@Url.Action("DeleteUser", "User")" class="form-spacer">
+                            <button type="submit" class="btn btn-danger px-4 ms-3">Delete User</button>
                         </form>
+
+                        @* Button pentru a trimite catre create View of Course*@
+                        <a asp-controller="Course" asp-action="Create" class="btn btn-primary px-4 ms-3 form-spacer">Create Course</a>
+
                     </div>
                 </div>
 

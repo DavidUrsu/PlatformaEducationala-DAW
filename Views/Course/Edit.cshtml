@@ -1,0 +1,69 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@*make a var course from the ViewBag*@
+@{
+	var course = ViewBag.Course;
+}
+
+<h1> Edit Course @course.CourseName </h1>
+
+<form method="post">
+	<div class="mb-3">
+		<label for="CourseId" class="form-label">Course ID</label>
+		<input type="text" class="form-control" id="CourseId" name="CourseId" value="@course.CourseId" readonly>
+	</div>
+
+	<div class="mb-3">
+		<label for="CourseName" class="form-label">Course Name</label>
+		<input type="text" class="form-control" id="courseName" name="courseName" value="@course.CourseName">
+	</div>
+
+	<div class="mb-3">
+		<label for="CourseDescription" class="form-label">Course Description</label>
+		<textarea class="form-control" id="courseDescription" name="courseDescription" rows="3" >@course.CourseDescription</textarea>
+	</div>
+
+	<div class="row g-3 align-items-center">
+		<div class="col-auto">
+			<label for="coursePrice" class="col-form-label">Price</label>
+		</div>
+		<div class="col-auto">
+			<input type="number" id="coursePrice" name="coursePrice" class="form-control" value="@course.CoursePrice">
+		</div>
+		<div class="col-auto">
+			<span id="coursePriceHelpInLine" class="form-text">
+				&euro;
+			</span>
+		</div>
+	</div>
+
+	<div class="row g-3 align-items-center">
+		<div class="col-auto">
+			<label for="courseSalePrice" class="col-form-label">Sale Price</label>
+		</div>
+		<div class="col-auto">
+			<input type="number" id="courseSalePrice" name="courseSalePrice" class="form-control" value="@course.CourseSalePrice">
+		</div>
+		<div class="col-auto">
+			<span id="coursePriceHelpInLine" class="form-text">
+				&euro;
+			</span>
+		</div>
+	</div>
+
+	<div class="b-3">
+		<label for="courseImage" class="form-label">Course Image</label>
+		<input type="text" class="form-control" id="courseImage" name="courseImage" placeholder="Image URL" value="@course.CourseImage" />
+	</div>
+
+	<button class="btn btn-primary w-100 py-2" type="submit">Modify</button>
+</form>
+
+@* Delete Course *@
+<form method="post" action="@Url.Action("Delete", "Course", new { id = course.CourseId })">
+<button class="btn btn-danger w-100 py-2" type="submit">Delete</button>
+</form>

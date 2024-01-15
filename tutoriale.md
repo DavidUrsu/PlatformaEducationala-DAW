@@ -7,4 +7,6 @@ create baze de date
 Controllers
 https://www.youtube.com/watch?v=709kkA8v_WA
 
-Views
+One to many
+https://www.youtube.com/watch?v=DWi-VHElmRE
+
