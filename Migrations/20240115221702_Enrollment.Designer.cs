@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PlatformaEducationala_DAW.Models;
 
@@ -11,9 +12,11 @@ using PlatformaEducationala_DAW.Models;
 namespace PlatformaEducationalaDAW.Migrations
 {
     [DbContext(typeof(PlatformaDbContext))]
-    partial class PlatformaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240115221702_Enrollment")]
+    partial class Enrollment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,39 +24,6 @@ namespace PlatformaEducationalaDAW.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("PlatformaEducationala_DAW.Models.BlogPost", b =>
-                {
-                    b.Property<int>("BlogPostId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BlogPostId"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DatePosted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BlogPostId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("BlogPosts");
-                });
 
             modelBuilder.Entity("PlatformaEducationala_DAW.Models.Course", b =>
                 {
@@ -146,17 +116,6 @@ namespace PlatformaEducationalaDAW.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("PlatformaEducationala_DAW.Models.BlogPost", b =>
-                {
-                    b.HasOne("PlatformaEducationala_DAW.Models.User", "User")
-                        .WithMany("BlogPosts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("PlatformaEducationala_DAW.Models.Course", b =>
                 {
                     b.HasOne("PlatformaEducationala_DAW.Models.User", "Professor")
@@ -194,8 +153,6 @@ namespace PlatformaEducationalaDAW.Migrations
 
             modelBuilder.Entity("PlatformaEducationala_DAW.Models.User", b =>
                 {
-                    b.Navigation("BlogPosts");
-
                     b.Navigation("Enrollments");
 
                     b.Navigation("TaughtCourses");

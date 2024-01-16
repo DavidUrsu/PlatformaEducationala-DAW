@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PlatformaEducationala_DAW.Models;
 
 namespace PlatformaEducationala_DAW.Controllers
@@ -15,6 +16,20 @@ namespace PlatformaEducationala_DAW.Controllers
         {
             var courses = _context.Courses.ToList();
             ViewBag.Courses = courses;
+
+            // check if the user is logged in
+            if (Request.Cookies["id"] != null)
+            {
+				// get the enrolled courses of the user
+				var userEnrollments = _context.Users
+					.Where(u => u.UserId == int.Parse(Request.Cookies["id"]))
+					.Include(u => u.Enrollments)
+					.ThenInclude(e => e.Course)
+					.FirstOrDefault();
+                // get just the id of the courses
+                var enrolledCourses = userEnrollments.Enrollments.Select(e => e.CourseId).ToList();
+                ViewBag.EnrolledCourses = enrolledCourses;
+            }
 
             return View();
         }
@@ -156,6 +171,82 @@ namespace PlatformaEducationala_DAW.Controllers
                 _context.SaveChanges();
 
                 return RedirectToAction("Index", "Course");
+            }
+        }
+
+        //enroll user to the Course
+        public IActionResult Enroll(int id)
+        {
+			// check if the user is logged in
+			if (Request.Cookies["id"] == null)
+            {
+				return RedirectToAction("Login", "User");
+			}
+			//check if the course exists
+			else if (_context.Courses.Find(id) == null)
+            {
+				return RedirectToAction("Index", "Course");
+			}
+			else
+            {
+				//check if the user is already enrolled
+				var user = _context.Users
+					.Where(u => u.UserId == int.Parse(Request.Cookies["id"]))
+					.Include(u => u.Enrollments)
+					.ThenInclude(e => e.Course)
+					.FirstOrDefault();
+				foreach (var enrollment in user.Enrollments)
+                {
+					if (enrollment.CourseId == id)
+                    {
+						return RedirectToAction("Index", "Course");
+					}
+				}
+
+				// enroll user
+				Enrollment newEnrollment = new Enrollment();
+				newEnrollment.UserId = int.Parse(Request.Cookies["id"]);
+				newEnrollment.CourseId = id;
+				_context.Enrollments.Add(newEnrollment);
+				_context.SaveChanges();
+
+				return RedirectToAction("Index", "Course");
+			}
+		}
+
+        //unenroll user from the Course
+		public IActionResult Unenroll(int id)
+        {
+            // check if the user is logged in
+            if (Request.Cookies["id"] == null)
+            {
+				return RedirectToAction("Login", "User");
+			}
+            //check if the course exists
+            else if (_context.Courses.Find(id) == null)
+            {
+                return RedirectToAction("Index", "Course");
+            }
+            else
+            {
+                //check if the user is already enrolled
+				var user = _context.Users
+					.Where(u => u.UserId == int.Parse(Request.Cookies["id"]))
+					.Include(u => u.Enrollments)
+					.ThenInclude(e => e.Course)
+					.FirstOrDefault();
+				foreach (var enrollment in user.Enrollments)
+                {
+					if (enrollment.CourseId == id)
+                    {
+						// unenroll user
+						_context.Enrollments.Remove(enrollment);
+						_context.SaveChanges();
+						return RedirectToAction("Index", "Course");
+					}
+				}
+
+				return RedirectToAction("Index", "Course");
             }
         }
     }

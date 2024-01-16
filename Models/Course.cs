@@ -11,7 +11,11 @@
         public DateTime CourseDate { get; set; }
         public int ProfessorUserId { get; set; }
 
+        // Navigation property for the professor
         public User Professor { get; set; }
+
+        // Navigation property for enrollments
+        public ICollection<Enrollment> Enrollments { get; set; }
 
         public Course()
         {

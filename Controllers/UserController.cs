@@ -3,6 +3,7 @@ using PlatformaEducationala_DAW.Models;
 using System.Text;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 
 namespace PlatformaEducationala_DAW.Controllers
 {
@@ -205,5 +206,30 @@ namespace PlatformaEducationala_DAW.Controllers
 
             return RedirectToAction("Index", "User");
         }
+
+        // user enrollments
+        public IActionResult Enrollments()
+        {
+            // Verific daca este logat
+            if (Request.Cookies["id"] == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            else
+            {
+				// get the user with their enrollments
+				var user = _context.Users
+					.Where(u => u.UserId == int.Parse(Request.Cookies["id"]))
+					.Include(u => u.Enrollments)
+						.ThenInclude(e => e.Course)
+					.FirstOrDefault();
+
+				// select the courses from the enrollments
+				var courses = user.Enrollments.Select(e => e.Course).ToList();
+				ViewBag.Courses = courses;
+
+				return View();
+            }
+        }   
     }
 }

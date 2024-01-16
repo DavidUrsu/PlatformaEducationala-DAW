@@ -60,10 +60,16 @@
 		<input type="text" class="form-control" id="courseImage" name="courseImage" placeholder="Image URL" value="@course.CourseImage" />
 	</div>
 
-	<button class="btn btn-primary w-100 py-2" type="submit">Modify</button>
+	<style>
+		button {
+			margin-top: 10px;
+		}
+	</style>
+
+	<button class="btn btn-primary w-10 py-2" type="submit">Modify</button>
 </form>
 
 @* Delete Course *@
 <form method="post" action="@Url.Action("Delete", "Course", new { id = course.CourseId })">
-<button class="btn btn-danger w-100 py-2" type="submit">Delete</button>
+<button class="btn btn-danger w-10 py-2" type="submit">Delete</button>
 </form>

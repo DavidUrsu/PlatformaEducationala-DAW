@@ -1,0 +1,35 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<form method="post">
+	<h1 class="h3 mb-3 fw-normal">Create Blog Post</h1>
+
+	<div class="mb-3">
+		<label for="BlogPostTitle" class="form-label">Blog Post Name</label>
+		<input type="text" class="form-control" id="blogPostTitle" name="blogPostTitle">
+	</div>
+
+	@* CourseName, CourseDescription, CoursePrice, CourseImage
+	CourseImage is an url
+	*@
+	<div class="mb-3">
+		<label for="BlogPostContent" class="form-label">BlogPost Content</label>
+		<textarea class="form-control" id="BlogPostContent" name="BlogPostContent" rows="20"></textarea>
+	</div>
+
+	<div class="b-3">
+		<label for="BlogPostImage" class="form-label">Blog Post Image</label>
+		<input type="text" class="form-control" id="BlogPostImage" name="BlogPostImage" placeholder="Image URL" />
+	</div>
+
+	<style>
+		button {
+			margin-top: 10px;
+		}
+	</style>
+
+	<button class="btn btn-primary w-10 py-2" type="submit">Create</button>
+</form>

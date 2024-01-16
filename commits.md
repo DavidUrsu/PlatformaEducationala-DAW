@@ -1,28 +1,28 @@
-﻿Course:
-Relatie one to many catre User
-Un curs are un profesor care este un user
-Un user poate fi profesor la mai multe cursuri
-Daca UserId din cookie este la fel ca professorUserId atunci se adauga un buton care poate edita cursul
-Daca pretul redus este mai mic decat pretul normal atunci apare reducerea
+﻿Enrollment:
+creaza o legatura intre un user si un curs, relatie many to many
 
-CreateCourse:
-Se verifica daca userul este logat
-Se introduc detaliile
-Data se seteaza automat in constructor
-ProfessorUserId se preia din cookie
+CourseController:
+Enroll (id) adauga userul curent la cursul cu id-ul id
+Deenroll (id) scoate userul curent de la cursul cu id-ul id
 
-CourseEdit:
-Se verifica daca userul este logat
-Se verifica daca userul este profesorul care a creat cursul
-Se pot edita detaliile
-Se poate sterge cursul
+View Enrollments User:
+Afiseaza cursurile la care este inscris userul curent
 
-Adaugare in header:
-Link catre pagina de user
-Link catre pagina de cursuri
+View Course Index:
+pentru fiecare curs afiseaza optiunea de enroll si deenroll in functie de daca userul curent este inscris sau nu la cursul respectiv
 
-User Index:
-Link catre create course
+Adaugat Blog cu postari
 
-Buton de register in pagina de login
-Buton de login in pagina de register
+Blog View:
+Afiseaza toate postarile
+
+Index User:
+Buton pentru a adauga o noua postare
+
+Post View:
+Afiseaza postarea
+daca userul curent este autorul postarii, afiseaza butonul de edit si delete
+
+TODO:
+daca se sterge un user, sa se stearga si toate postarile lui si cursurile
+daca este sters un curs se sterg relatiile din enrollments

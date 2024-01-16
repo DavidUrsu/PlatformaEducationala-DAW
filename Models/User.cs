@@ -8,7 +8,15 @@
         public string Email { get; set; }
         public string Role { get; set; }
 
+        // Navigation property for courses taught by the user
         public ICollection<Course> TaughtCourses { get; set; }
+
+        // Navigation property for blog posts
+        public ICollection<BlogPost> BlogPosts { get; set; }
+
+
+        // Navigation property for enrollments
+        public ICollection<Enrollment> Enrollments { get; set; }
 
         public User() { }
     }

@@ -33,13 +33,25 @@
 								@if (Context.Request.Cookies["id"] != null)
 								{
 									if (int.Parse(Context.Request.Cookies["id"]) == course.ProfessorUserId)
-										{
+									{
 									<a asp-controller="Course" asp-action="Edit" asp-route-id="@course.CourseId" class="btn btn-primary">Edit Course</a>
 									}
 								}
+								@* check if the id cookie is set, then check if this course is in ViewBag.UserEnrollments*@
+								@if (Context.Request.Cookies["id"] != null)
+								{
+									if (ViewBag.EnrolledCourses.Contains(course.CourseId))
+									{
+										<a asp-controller="Course" asp-action="Unenroll" asp-route-id="@course.CourseId" class="btn btn-danger">Unenroll</a>
+									}
+									else
+									{
+										<a asp-controller="Course" asp-action="Enroll" asp-route-id="@course.CourseId" class="btn btn-success">Enroll</a>
+									}
+								}
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	}
-</div>
+								}
+	</div>
