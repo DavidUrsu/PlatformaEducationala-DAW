@@ -16,7 +16,7 @@
                 </h3>
                     <div class="mb-1 text-muted">@post.DatePosted</div>
                     @* get the first 90 chars from the description*@
-                <p class="card-text mb-auto">@post.Content.Substring(0, 90)...</p>
+                <p class="card-text mb-auto">@post.Content.Substring(0, Math.Min(90, @post.Content.Length))...</p>
                     <strong class="d-inline-block mb-2 text-success">Post by @post.User.Username</strong>
                     <a asp-controller="BlogPost" asp-action="Post" asp-route-id="@post.BlogPostId">Continue reading</a>
             </div>

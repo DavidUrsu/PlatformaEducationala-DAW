@@ -97,6 +97,13 @@ namespace PlatformaEducationala_DAW.Controllers
 					return RedirectToAction("Index", "Course");
 				}
 
+                //delete all the enrollments of the course
+                var enrollments = _context.Enrollments.Where(e => e.CourseId == id).ToList();
+                foreach (var enrollment in enrollments)
+                {
+					_context.Enrollments.Remove(enrollment);
+				}
+
 				// delete course
 				_context.Courses.Remove(course);
 				_context.SaveChanges();

@@ -87,8 +87,44 @@ namespace PlatformaEducationala_DAW.Controllers
 
             if (user != null)
             {
-                // Delete the user
-                _context.Users.Remove(user);
+				// Get all courses where the user is the teacher
+				var courses = _context.Courses.Where(c => c.ProfessorUserId == int.Parse(Request.Cookies["id"])).ToList();
+
+				foreach (var course in courses)
+				{
+					// Delete all the enrollments of the course
+					var enrollments = _context.Enrollments.Where(e => e.CourseId == course.CourseId).ToList();
+					foreach (var enrollment in enrollments)
+					{
+						_context.Enrollments.Remove(enrollment);
+					}
+
+					// Delete course
+					_context.Courses.Remove(course);
+				}
+				_context.SaveChanges();
+
+				// Get all blog posts by the user
+				var posts = _context.BlogPosts.Where(bp => bp.UserId == int.Parse(Request.Cookies["id"])).ToList();
+
+				foreach (var post in posts)
+				{
+					_context.BlogPosts.Remove(post);
+				}
+				_context.SaveChanges();
+
+
+				//delete all the enrollments of the user
+				var enrollments1 = _context.Enrollments.Where(e => e.UserId == int.Parse(Request.Cookies["id"])).ToList();
+                foreach (var enrollment in enrollments1)
+                {
+					_context.Enrollments.Remove(enrollment);
+				}
+
+				_context.SaveChanges();
+
+				// Delete the user
+				_context.Users.Remove(user);
                 _context.SaveChanges();
 
                 // Delete the "id" cookie
