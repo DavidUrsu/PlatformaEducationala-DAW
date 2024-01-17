@@ -1,5 +1,10 @@
-﻿daca se sterge un user se sterg toate cursurile si postarile facute
+﻿Adaugat Repository + Service
+Interogarile CRUD si logica LINQ se alfa in Repository
+In service se afla logica
 
-daca se sterge un curs se sterg toate enrollment-urile ce tin de acel curs
+Pentru a sterge baza de date in mod corect:
+- daca se sterge un user se sterg toate cursurile si postarile facute
 
-daca se sterge un user se sterg toate enroolment-urile ce tin de acel user
+- daca se sterge un curs se sterg toate enrollment-urile ce tin de acel curs
+
+- daca se sterge un user se sterg toate enroolment-urile ce tin de acel user

@@ -1,26 +1,24 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PlatformaEducationala_DAW.Models;
+using PlatformaEducationala_DAW.Services.BlogPostService;
 
 namespace PlatformaEducationala_DAW.Controllers
 {
 	public class BlogPostController : Controller
 	{
-		private readonly PlatformaDbContext _context;
-		public BlogPostController(PlatformaDbContext context)
+		private readonly IBlogPostService _blogPostService;
+
+		public BlogPostController(IBlogPostService blogPostService)
 		{
-			_context = context;
+			_blogPostService = blogPostService;
 		}
 
 		public IActionResult Index()
 		{
-			//get all the posts from the database
-			var posts = _context.BlogPosts
-							.Include(bp => bp.User)
-							.ToList();
-
-			ViewBag.Posts = posts;
+			ViewBag.Posts = _blogPostService.GetAllBlogPosts();
 			return View();
 		}
 
@@ -28,9 +26,7 @@ namespace PlatformaEducationala_DAW.Controllers
 		public IActionResult Post(int id)
 		{
 			// check is there is a post with the given id
-			var post = _context.BlogPosts
-							.Include(bp => bp.User)
-							.FirstOrDefault(bp => bp.BlogPostId == id);
+			var post = _blogPostService.GetBlogPostById(id);
 			if (post == null)
 			{
 				return RedirectToAction("Index", "BlogPost");
@@ -58,33 +54,25 @@ namespace PlatformaEducationala_DAW.Controllers
 
 		//create a new blog post
 		[HttpPost]
-		public IActionResult Create(string blogPostTitle, string BlogPostContent, string BlogPostImage)
+		public IActionResult Create(string blogPostTitle, string blogPostContent, string blogPostImage)
 		{
+			var UserId = Request.Cookies["id"];
 			//check if the user is logged in
-			if (Request.Cookies["id"] == null)
+			if (UserId == null)
 			{
 				return RedirectToAction("Login", "User");
 			}
 			else
 			{
 				//check if the fields are not empty
-				if (blogPostTitle == null || BlogPostContent == null || BlogPostImage == null)
+				if (blogPostTitle == null || blogPostContent == null || blogPostImage == null)
 				{
 					return RedirectToAction("Index", "BlogPost");
 				}
 				else
 				{
 					//create the new post
-					var post = new BlogPost
-					{
-						Title = blogPostTitle,
-						Content = BlogPostContent,
-						ImageUrl = BlogPostImage,
-						UserId = int.Parse(Request.Cookies["id"])
-					};
-
-					_context.BlogPosts.Add(post);
-					_context.SaveChanges();
+					_blogPostService.CreateBlogPost(blogPostTitle, blogPostContent, blogPostImage, int.Parse(UserId));
 
 					return RedirectToAction("Index", "BlogPost");
 				}
@@ -94,48 +82,32 @@ namespace PlatformaEducationala_DAW.Controllers
 		//delete a blog post
 		public IActionResult Delete(int id)
 		{
+			var UserId = Request.Cookies["id"];
 			//check if the user is logged in
-			if (Request.Cookies["id"] == null)
+			if (UserId == null)
 			{
 				return RedirectToAction("Login", "User");
 			}
 			else
 			{
-				//check if there is a post with the given id
-				var post = _context.BlogPosts
-								.Include(bp => bp.User)
-								.FirstOrDefault(bp => bp.BlogPostId == id);
-				if (post == null)
-				{
-					return RedirectToAction("Index", "BlogPost");
-				}
-				else
-				{
-					//check if the user is the author of the post
-					if (post.UserId == int.Parse(Request.Cookies["id"]))
-					{
-						_context.BlogPosts.Remove(post);
-						_context.SaveChanges();
-					}
-					return RedirectToAction("Index", "BlogPost");
-				}
+				_blogPostService.DeleteBlogPost(id);
+				return RedirectToAction("Index", "BlogPost");
 			}
 		}
 
 		//edit a blog post
 		public IActionResult Edit(int id)
 		{
+			var UserId = Request.Cookies["id"];
 			//check if the user is logged in
-			if (Request.Cookies["id"] == null)
+			if (UserId == null)
 			{
 				return RedirectToAction("Login", "User");
 			}
 			else
 			{
 				//check if there is a post with the given id
-				var post = _context.BlogPosts
-								.Include(bp => bp.User)
-								.FirstOrDefault(bp => bp.BlogPostId == id);
+				var post = _blogPostService.GetBlogPostById(id);
 				if (post == null)
 				{
 					return RedirectToAction("Index", "BlogPost");
@@ -143,7 +115,7 @@ namespace PlatformaEducationala_DAW.Controllers
 				else
 				{
 					//check if the user is the author of the post
-					if (post.UserId == int.Parse(Request.Cookies["id"]))
+					if (post.UserId == int.Parse(UserId))
 					{
 						ViewBag.Post = post;
 						return View();
@@ -160,17 +132,16 @@ namespace PlatformaEducationala_DAW.Controllers
 		[HttpPost]
 		public IActionResult Edit(int id, string blogPostTitle, string BlogPostContent, string BlogPostImage)
 		{
+			var UserId = Request.Cookies["id"];
 			//check if the user is logged in
-			if (Request.Cookies["id"] == null)
+			if (UserId == null)
 			{
 				return RedirectToAction("Login", "User");
 			}
 			else
 			{
 				//check if there is a post with the given id
-				var post = _context.BlogPosts
-								.Include(bp => bp.User)
-								.FirstOrDefault(bp => bp.BlogPostId == id);
+				var post = _blogPostService.GetBlogPostById(id);
 				if (post == null)
 				{
 					return RedirectToAction("Index", "BlogPost");
@@ -178,7 +149,7 @@ namespace PlatformaEducationala_DAW.Controllers
 				else
 				{
 					//check if the user is the author of the post
-					if (post.UserId == int.Parse(Request.Cookies["id"]))
+					if (post.UserId == int.Parse(UserId))
 					{
 						//check if the fields are not empty
 						if (blogPostTitle == null || BlogPostContent == null || BlogPostImage == null)
@@ -187,12 +158,7 @@ namespace PlatformaEducationala_DAW.Controllers
 						}
 						else
 						{
-							//update the post
-							post.Title = blogPostTitle;
-							post.Content = BlogPostContent;
-							post.ImageUrl = BlogPostImage;
-
-							_context.SaveChanges();
+							_blogPostService.UpdateBlogPost(post, blogPostTitle, BlogPostContent, BlogPostImage);
 
 							return RedirectToAction("Index", "BlogPost");
 						}
