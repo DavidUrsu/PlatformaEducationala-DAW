@@ -1,10 +1,6 @@
-﻿Adaugat Repository + Service
-Interogarile CRUD si logica LINQ se alfa in Repository
-In service se afla logica
+Am rescris codul in tip API pentru a-l implementa cu Angular:
+1. Clasa Controller este înlocuită cu ControllerBase deoarece ControllerBase este mai potrivit pentru API controllers, pentru că nu include suport pentru view-uri.
+2. View() și RedirectToAction() sunt înlocuite cu metode care returnează date sau coduri HTTP.
 
-Pentru a sterge baza de date in mod corect:
-- daca se sterge un user se sterg toate cursurile si postarile facute
-
-- daca se sterge un curs se sterg toate enrollment-urile ce tin de acel curs
-
-- daca se sterge un user se sterg toate enroolment-urile ce tin de acel user
+CourseDTO
+Am creat o nouă clasă CourseDTO pentru a evita circular reference.
