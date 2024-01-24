@@ -4,3 +4,5 @@ Am rescris codul in tip API pentru a-l implementa cu Angular:
 
 CourseDTO
 Am creat o nouă clasă CourseDTO pentru a evita circular reference.
+
+Proiect Angular

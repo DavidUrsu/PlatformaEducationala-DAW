@@ -1,0 +1,18 @@
+<div class="blog-post">
+	<h2 class="blog-post-title">{{blogPost.title}}</h2>
+	<p class="blog-post-meta">{{blogPost.datePosted | slice:0:10}} by {{blogPost.userId}}</p>
+
+	<p>{{blogPost.content}}</p>
+
+	<!-- <div class="buttons">
+		@*verific daca user-ul conectat este cel care a facut postarea*@
+		@if (Context.Request.Cookies["id"] != null)
+		{
+			@if (ViewBag.Post.User.UserId == int.Parse(Context.Request.Cookies["id"]))
+			{
+				@* Buton pentru editarea postarii *@
+				<a asp-controller="BlogPost" asp-action="Edit" asp-route-id="@ViewBag.Post.BlogPostId" class="btn btn-primary px-4 ms-3">Edit</a>
+			}
+		}
+	</div> -->
+</div>

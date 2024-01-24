@@ -1,0 +1,26 @@
+<h1> Create New Blog Post </h1>
+
+<form [formGroup]="blogPostForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+        <label for="BlogPostTitle" class="form-label">Blog Post Title</label>
+        <input type="text" class="form-control" formControlName="blogPostTitle">
+    </div>
+
+    <div class="mb-3">
+        <label for="BlogPostContent" class="form-label">Blog Post Content</label>
+        <textarea class="form-control" rows="20" formControlName="blogPostContent"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="BlogPostImage" class="form-label">Blog Post Image</label>
+        <input type="text" class="form-control" formControlName="blogPostImage" />
+    </div>
+
+    <style>
+        button {
+            margin-top: 10px;
+        }
+    </style>
+
+    <button class="btn btn-primary w-10 py-2" type="submit">Create</button>
+</form>

@@ -77,8 +77,8 @@ namespace PlatformaEducationalaAPI.Controllers
 		}
 
 		//edit a blog post
-		[HttpPut("{id}")]
-		public IActionResult Edit(int id, string blogPostTitle, string BlogPostContent, string BlogPostImage)
+		[HttpPut("edit/{id}", Name = "editBlogPost")]
+		public IActionResult Edit(int id, string blogPostTitle, string blogPostContent, string blogPostImage)
 		{
 			var UserId = Request.Cookies["id"];
 			//check if the user is logged in
@@ -86,7 +86,7 @@ namespace PlatformaEducationalaAPI.Controllers
 			{
 				return Unauthorized();
 			}
-			else if (blogPostTitle == null || BlogPostContent == null || BlogPostImage == null)
+			else if (blogPostTitle == null || blogPostContent == null || blogPostImage == null)
 			{
 				//check if the fields are valid
 				return BadRequest();
@@ -104,12 +104,13 @@ namespace PlatformaEducationalaAPI.Controllers
 					//check if the user is the author of the post
 					if (existingPost.UserId == int.Parse(UserId))
 					{
-						_blogPostService.UpdateBlogPost(id, blogPostTitle, BlogPostContent, BlogPostImage);
+						_blogPostService.UpdateBlogPost(id, blogPostTitle, blogPostContent, blogPostImage);
 						return NoContent();
 					}
 					else
 					{
-						return Unauthorized();
+						var message = id + "a" + blogPostTitle + "b" + blogPostContent + "c" + blogPostImage;
+						return Unauthorized(message);
 					}
 				}
 			}

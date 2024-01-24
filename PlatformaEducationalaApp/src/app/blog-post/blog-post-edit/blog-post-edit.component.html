@@ -1,0 +1,31 @@
+<h1> Edit Blog Post {{blogPost.title}} </h1>
+
+<form [formGroup]="blogPostForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+        <label for="CourseId" class="form-label">Blog Post ID</label>
+        <input type="text" class="form-control" formControlName="blogPostId" readonly>
+    </div>
+
+    <div class="mb-3">
+        <label for="BlogPostTitle" class="form-label">Blog Post Title</label>
+        <input type="text" class="form-control" formControlName="blogPostTitle">
+    </div>
+
+    <div class="mb-3">
+        <label for="BlogPostContent" class="form-label">BlogPost Content</label>
+        <textarea class="form-control" rows="20" formControlName="blogPostContent">@ViewBag.Post.Content</textarea>
+    </div>
+
+    <div class="b-3">
+        <label for="BlogPostImage" class="form-label">Blog Post Image</label>
+        <input type="text" class="form-control" formControlName="blogPostImage" />
+    </div>
+
+    <style>
+        button {
+            margin-top: 10px;
+        }
+    </style>
+
+    <button class="btn btn-primary w-10 py-2" type="submit">Modify</button>
+</form>
