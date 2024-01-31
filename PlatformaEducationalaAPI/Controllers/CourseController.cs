@@ -18,36 +18,37 @@ namespace PlatformaEducationalaAPI.Controllers
 
 		// Get all the courses
 		[HttpGet(Name = "GetAllCourses")]
-		public ActionResult<IEnumerable<Course>> GetAllCourses()
+		public ActionResult<IEnumerable<CourseDTO>> GetAllCourses()
 		{
 			return Ok(_service.GetAllCourses());
 		}
 
 		//Get the enrolled courses of a user
 		[HttpGet("GetEnrolledCoursesByUserId/{id}", Name = "GetEnrolledCoursesByUserId")]
-		public ActionResult<IEnumerable<Course>> GetEnrolledCoursesByUserId(int id)
+		public ActionResult<IEnumerable<int>> GetEnrolledCoursesByUserId(int id)
 		{
 			return Ok(_service.GetTheIdOfEnrolledCourses(id));
 		}
 
 		// Create course
 		[HttpPost]
-		public ActionResult<Course> Create(string courseName, string courseDescription, int coursePrice, string courseImage)
+		public ActionResult<Course> Create(CourseDTO newCourse)
 		{
 			var userId = Request.Cookies["id"];
 			if (userId == null)
 			{
 				return Unauthorized();
 			}
-			else if (courseName == null || courseDescription == null || courseImage == null)
+			else if (newCourse.CourseName == null || newCourse.CourseDescription == null || newCourse.CourseImage == null)
 			{
 				// check if the fields are valid
 				return BadRequest();
 			}
 			else
 			{
-				var newCourse = _service.CreateCourse(courseName, courseDescription, coursePrice, courseImage, int.Parse(userId));
-				return CreatedAtAction("GetAllCourses", new { id = newCourse.CourseId }, newCourse);
+				newCourse.ProfessorUserId = int.Parse(userId);
+				var course = _service.CreateCourse(newCourse);
+				return CreatedAtAction("GetAllCourses", new { id = course.CourseId }, course);
 			}
 		}
 
@@ -83,8 +84,8 @@ namespace PlatformaEducationalaAPI.Controllers
 		}
 
 		//edit course post
-		[HttpPut("{id}")]
-		public IActionResult Edit(int id, string courseName, string courseDescription, int coursePrice, int courseSalePrice, string courseImage)
+		[HttpPut]
+		public IActionResult Edit(CourseDTO editedCourse)
 		{
 			//check if the user is logged in
 			var userId = Request.Cookies["id"];
@@ -92,7 +93,7 @@ namespace PlatformaEducationalaAPI.Controllers
 			{
 				return Unauthorized();
 			}
-			else if(courseName == null || courseDescription == null || courseImage == null)
+			else if(editedCourse.CourseName == null || editedCourse.CourseDescription == null || editedCourse.CourseImage == null)
 			{
 				//check if the fields are valid
 				return BadRequest();
@@ -100,7 +101,7 @@ namespace PlatformaEducationalaAPI.Controllers
 			else
 			{
 				// check if there is a course with the given id
-				var existingCourse = _service.GetCourseById(id);
+				var existingCourse = _service.GetCourseById(editedCourse.CourseId);
 				if (existingCourse == null)
 				{
 					return NotFound();
@@ -113,8 +114,9 @@ namespace PlatformaEducationalaAPI.Controllers
 						return Unauthorized();
 					}
 
+					editedCourse.ProfessorUserId = existingCourse.ProfessorUserId;
 					// update course
-					_service.UpdateCourse(coursePrice, courseName, courseDescription, coursePrice, courseSalePrice, courseImage);
+					_service.UpdateCourse(editedCourse);
 
 					return NoContent();
 				}

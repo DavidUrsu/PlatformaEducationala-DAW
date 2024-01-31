@@ -13,20 +13,25 @@ namespace PlatformaEducationalaAPI.Repositories.CourseRepository
 			_context = context;
 		}
 
-		public IEnumerable<Course> GetAllCourses()
+		public IEnumerable<CourseDTO> GetAllCourses()
 		{
-			return _context.Courses.ToList();
+			return _context.Courses.Select(c => new CourseDTO
+			{
+				CourseId = c.CourseId,
+				CourseName = c.CourseName,
+				CourseDescription = c.CourseDescription,
+				CoursePrice = c.CoursePrice,
+				CourseSalePrice = c.CourseSalePrice,
+				CourseImage = c.CourseImage,
+				ProfessorUserId = c.ProfessorUserId,
+				ProfessorName = _context.Users.FirstOrDefault(u => u.UserId == c.ProfessorUserId).Username,
+				CourseDate = c.CourseDate
+			}).ToList();
 		}
 
 		public Course GetCourseById(int id)
 		{
 			return _context.Courses.Find(id);
-		}
-
-		public void AddCourse(Course course)
-		{
-			_context.Courses.Add(course);
-			_context.SaveChanges();
 		}
 
 		public void DeleteCourse(int id)
@@ -59,7 +64,11 @@ namespace PlatformaEducationalaAPI.Repositories.CourseRepository
 				CourseId = e.Course.CourseId,
 				CourseName = e.Course.CourseName,
 				CourseDescription = e.Course.CourseDescription,
-				// Map other properties
+				CourseImage = e.Course.CourseImage,
+				CoursePrice = e.Course.CoursePrice,
+				CourseSalePrice = e.Course.CourseSalePrice,
+				ProfessorUserId = e.Course.ProfessorUserId,
+				ProfessorName = _context.Users.FirstOrDefault(u => u.UserId == e.Course.ProfessorUserId).Username
 			}).ToList();
 		}
 
@@ -74,36 +83,46 @@ namespace PlatformaEducationalaAPI.Repositories.CourseRepository
 			_context.SaveChanges();
 		}
 
-		public void UpdateCourse(int CourseId, string courseName, string courseDescription, int coursePrice, int courseSalePrice, string courseImage)
+		public void UpdateCourse(CourseDTO updatedCourse)
 		{
-			var course = GetCourseById(CourseId);
-			if (course != null)
+			var existingCourse = GetCourseById(updatedCourse.CourseId);
+			if (existingCourse != null)
 			{
-				course.CourseName = courseName;
-				course.CourseDescription = courseDescription;
-				course.CoursePrice = coursePrice;
-				course.CourseSalePrice = courseSalePrice;
-				course.CourseImage = courseImage;
+				existingCourse.CourseName = updatedCourse.CourseName;
+				existingCourse.CourseDescription = updatedCourse.CourseDescription;
+				existingCourse.CoursePrice = updatedCourse.CoursePrice;
+				existingCourse.CourseSalePrice = updatedCourse.CourseSalePrice;
+				existingCourse.CourseImage = updatedCourse.CourseImage;
 				_context.SaveChanges();
 			}
 		}
 
-		public Course CreateCourse(string courseName, string courseDescription, int coursePrice, string courseImage, int ProfessorId)
+		public CourseDTO CreateCourse(CourseDTO newCourse)
 		{
-			// create course
-			Course course = new Course();
-			course.CourseName = courseName;
-			course.CourseDescription = courseDescription;
-			course.CoursePrice = coursePrice;
-			course.CourseSalePrice = coursePrice;
-			course.CourseImage = courseImage;
-			course.ProfessorUserId = ProfessorId;
+			var course = new Course
+			{
+				CourseName = newCourse.CourseName,
+				CourseDescription = newCourse.CourseDescription,
+				CoursePrice = newCourse.CoursePrice,
+				CourseSalePrice = newCourse.CourseSalePrice,
+				CourseImage = newCourse.CourseImage,
+				ProfessorUserId = newCourse.ProfessorUserId
+			};
 
-			// add course to database
 			_context.Courses.Add(course);
 			_context.SaveChanges();
 
-			return course;
+			return new CourseDTO
+			{
+				CourseId = course.CourseId,
+				CourseName = course.CourseName,
+				CourseDescription = course.CourseDescription,
+				CoursePrice = course.CoursePrice,
+				CourseSalePrice = course.CourseSalePrice,
+				CourseImage = course.CourseImage,
+				ProfessorUserId = course.ProfessorUserId,
+				ProfessorName = _context.Users.FirstOrDefault(u => u.UserId == course.ProfessorUserId).Username
+			};
 		}
 
 		public void addEnrollment(Enrollment enrollment)

@@ -12,14 +12,9 @@ namespace PlatformaEducationalaAPI.Services.BlogPostService
 			_blogPostRepository = repository;
 		}
 
-		public void CreateBlogPost(BlogPost post)
+		public BlogPostDTO CreateBlogPost(BlogPostDTO newBlogPost)
 		{
-			_blogPostRepository.CreateBlogPost(post);
-		}
-
-		public BlogPost CreateBlogPost(string blogPostTitle, string blogPostContent, string blogPostImage, int userId)
-		{
-			return _blogPostRepository.CreateBlogPost(blogPostTitle, blogPostContent, blogPostImage, userId);
+			return _blogPostRepository.CreateBlogPost(newBlogPost);
 		}
 
 		public void DeleteBlogPost(int id)
@@ -31,19 +26,19 @@ namespace PlatformaEducationalaAPI.Services.BlogPostService
 			}
 		}
 
-		public IEnumerable<BlogPost> GetAllBlogPosts()
+		public IEnumerable<BlogPostDTO> GetAllBlogPosts()
 		{
 			return _blogPostRepository.GetAllBlogPosts();
 		}
 
-		public BlogPost GetBlogPostById(int id)
+		public BlogPostDTO GetBlogPostById(int id)
 		{
 			return _blogPostRepository.GetBlogPostbyId(id);
 		}
 
-		public void UpdateBlogPost(int blogPostId, string blogPostTitle, string BlogPostContent, string BlogPostImage)
+		public void UpdateBlogPost(BlogPostDTO editedBlogPost)
 		{
-			_blogPostRepository.UpdateBlogPost(blogPostId, blogPostTitle, BlogPostContent, BlogPostImage);
+			_blogPostRepository.UpdateBlogPost(editedBlogPost);
 		}
 	}
 }

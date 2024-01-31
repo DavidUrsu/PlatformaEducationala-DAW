@@ -18,7 +18,7 @@ namespace PlatformaEducationalaAPI.Services.CourseService
 			return _courseRepository.GetCourseById(id);
 		}
 
-		public IEnumerable<Course> GetAllCourses()
+		public IEnumerable<CourseDTO> GetAllCourses()
 		{
 			return _courseRepository.GetAllCourses();
 		}
@@ -56,14 +56,14 @@ namespace PlatformaEducationalaAPI.Services.CourseService
 			_courseRepository.DeleteCourse(id);
 		}
 
-		public void UpdateCourse(int CourseId, string courseName, string courseDescription, int coursePrice, int courseSalePrice, string courseImage)
+		public void UpdateCourse(CourseDTO updatedCourse)
 		{
-			_courseRepository.UpdateCourse(CourseId, courseName, courseDescription, coursePrice, courseSalePrice, courseImage);
+			_courseRepository.UpdateCourse(updatedCourse);
 		}
 
-		public Course CreateCourse(string courseName, string courseDescription, int coursePrice, string courseImage, int ProfessorId)
+		public CourseDTO CreateCourse(CourseDTO newCourse)
 		{
-			return _courseRepository.CreateCourse(courseName, courseDescription, coursePrice, courseImage, ProfessorId);
+			return _courseRepository.CreateCourse(newCourse);
 		}
 
 		public bool IsUserEnrolledToCourse(int userId, int courseId)
@@ -110,16 +110,6 @@ namespace PlatformaEducationalaAPI.Services.CourseService
 					return;
 				}
 			}
-		}
-
-		public void CreateCourse(Course newCourse)
-		{
-			_courseRepository.AddCourse(newCourse);
-		}
-
-		public void UpdateCourse(Course course)
-		{
-			_courseRepository.UpdateCourse(course);
 		}
 	}
 }

@@ -19,16 +19,16 @@ namespace PlatformaEducationalaAPI.Controllers
 		}
 
 		[HttpGet(Name = "GetAllBlogPosts")]
-		public ActionResult<IEnumerable<BlogPost>> GetAllBlogPosts()
+		public ActionResult<IEnumerable<BlogPostDTO>> GetAllBlogPosts()
 		{
 			return Ok(_blogPostService.GetAllBlogPosts().ToArray());
 		}
 
 		//get the details of a blog post
 		[HttpGet("{id}")]
-		public ActionResult<BlogPost> Post(int id)
+		public ActionResult<BlogPostDTO> Post(int id)
 		{
-			// check is there is a post with the given id
+			// check if there is a post with the given id
 			var post = _blogPostService.GetBlogPostById(id);
 			if (post == null)
 			{
@@ -39,7 +39,7 @@ namespace PlatformaEducationalaAPI.Controllers
 
 		//create a new blog post
 		[HttpPost]
-		public ActionResult<BlogPost> Create(string blogPostTitle, string blogPostContent, string blogPostImage)
+		public ActionResult<BlogPost> Create(BlogPostDTO newBlogPost)
 		{
 			var userId = Request.Cookies["id"];
 			//check if the user is logged in
@@ -49,13 +49,15 @@ namespace PlatformaEducationalaAPI.Controllers
 			}
 			else
 			{
+				// set the user id
+				newBlogPost.UserId = int.Parse(userId);
 				// check if the fields are valid
-				if (blogPostTitle == null || blogPostContent == null || blogPostImage == null)
+				if (newBlogPost.Title == null || newBlogPost.Content == null || newBlogPost.ImageUrl == null)
 				{
 					return BadRequest();
 				}
 
-				var newPost = _blogPostService.CreateBlogPost(blogPostTitle, blogPostContent, blogPostImage, int.Parse(userId));
+				var newPost = _blogPostService.CreateBlogPost(newBlogPost);
 				return CreatedAtAction("GetAllBlogPosts", new { id = newPost.BlogPostId }, newPost);
 			}
 		}
@@ -77,8 +79,8 @@ namespace PlatformaEducationalaAPI.Controllers
 		}
 
 		//edit a blog post
-		[HttpPut("edit/{id}", Name = "editBlogPost")]
-		public IActionResult Edit(int id, string blogPostTitle, string blogPostContent, string blogPostImage)
+		[HttpPut]
+		public IActionResult Edit(BlogPostDTO editedBlogPost)
 		{
 			var UserId = Request.Cookies["id"];
 			//check if the user is logged in
@@ -86,7 +88,7 @@ namespace PlatformaEducationalaAPI.Controllers
 			{
 				return Unauthorized();
 			}
-			else if (blogPostTitle == null || blogPostContent == null || blogPostImage == null)
+			else if (editedBlogPost.Title == null || editedBlogPost.Content == null || editedBlogPost.ImageUrl == null)
 			{
 				//check if the fields are valid
 				return BadRequest();
@@ -94,7 +96,7 @@ namespace PlatformaEducationalaAPI.Controllers
 			else
 			{
 				//check if there is a post with the given id
-				var existingPost = _blogPostService.GetBlogPostById(id);
+				var existingPost = _blogPostService.GetBlogPostById(editedBlogPost.BlogPostId);
 				if (existingPost == null)
 				{
 					return NotFound();
@@ -104,13 +106,12 @@ namespace PlatformaEducationalaAPI.Controllers
 					//check if the user is the author of the post
 					if (existingPost.UserId == int.Parse(UserId))
 					{
-						_blogPostService.UpdateBlogPost(id, blogPostTitle, blogPostContent, blogPostImage);
+						_blogPostService.UpdateBlogPost(editedBlogPost);
 						return NoContent();
 					}
 					else
 					{
-						var message = id + "a" + blogPostTitle + "b" + blogPostContent + "c" + blogPostImage;
-						return Unauthorized(message);
+						return Unauthorized();
 					}
 				}
 			}
