@@ -11,9 +11,9 @@ import { BlogPost } from '../../shared/blog-post.model';
 })
 export class BlogPostCreateComponent implements OnInit {
   blogPostForm: FormGroup = new FormGroup({
-    'blogPostTitle': new FormControl(null, Validators.required),
-    'blogPostContent': new FormControl(null, Validators.required),
-    'blogPostImage': new FormControl(null, Validators.required)
+    title: new FormControl(null, Validators.required),
+    content: new FormControl(null, Validators.required),
+    imageUrl: new FormControl(null, Validators.required)
   });
 
   constructor(
@@ -25,15 +25,14 @@ export class BlogPostCreateComponent implements OnInit {
 
   onSubmit() {
     if (this.blogPostForm.valid) {
-      const formValues = this.blogPostForm.value;
-      const newPost = {
-        blogPostTitle: formValues.blogPostTitle || '',
-        blogPostContent: formValues.blogPostContent || '',
-        blogPostImage: formValues.blogPostImage || '',
-      };
-
-      this.blogPostService.createPost(newPost).subscribe( () => {
-        this.router.navigate(['/blogpost']);
+      this.blogPostService.createPost(this.blogPostForm.value).subscribe({
+        next: res => {
+          this.blogPostService.refreshList();
+          this.router.navigate(['/blogpost']);
+        },
+        error: err => {
+          console.log(err);
+        }
       });
     }
   }

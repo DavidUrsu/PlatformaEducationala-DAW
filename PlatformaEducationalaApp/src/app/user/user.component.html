@@ -1,0 +1,35 @@
+<div class="container mt-5">
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-7">
+        <div class="card p-3 py-4">
+          <div class="text-center">
+            <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" width="100" class="rounded-circle">
+          </div>
+          <div class="text-center mt-3">
+            <h5 class="mt-2 mb-0">{{userDetail.username}}</h5>
+            <div class="px-4 mt-1">
+              <p class="fonts">Email: {{userDetail.email}}</p>
+            </div>
+            <div class="px-4 mt-1">
+              <p class="fonts">User id: {{userDetail.userId}}</p>
+            </div>
+            <div class="buttons">
+              <!-- Button for logout -->
+              <button (click)="logout()" class="btn btn-warning px-4 ms-3 form-spacer">Sign Out</button>
+              <!-- Form for changing email -->
+              <form (submit)="changeEmail(newEmail.value)" class="form-spacer">
+                <input type="email" #newEmail placeholder="New Email" required />
+                <button type="submit" class="btn btn-primary px-4 ms-3">Change Email</button>
+              </form>
+              <!-- Form for deleting account -->
+              <button (click)="deleteUser()" class="btn btn-danger px-4 ms-3 form-spacer">Delete User</button>
+              <!-- Button to navigate to create Course -->
+              <a routerLink="/course/create" class="btn btn-primary px-4 ms-3 form-spacer">Create Course</a>
+              <!-- Button to navigate to create BlogPost -->
+              <a routerLink="/blogpost/create" class="btn btn-primary px-4 ms-3 form-spacer">Create Blog Post</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

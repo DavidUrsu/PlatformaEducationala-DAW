@@ -13,7 +13,7 @@ namespace PlatformaEducationalaAPI.Services.CourseService
 			_courseRepository = repository;
 		}
 
-		public Course GetCourseById(int id)
+		public CourseDTO GetCourseById(int id)
 		{
 			return _courseRepository.GetCourseById(id);
 		}

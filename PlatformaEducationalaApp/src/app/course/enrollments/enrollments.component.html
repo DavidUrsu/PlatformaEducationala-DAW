@@ -1,0 +1,17 @@
+<h1> Your enrollments:</h1>
+
+<div class="courses">
+    <div *ngFor="let course of enrolledCoursesDetails" class="card mb-3" style="max-width: 540px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img [src]="course.courseImage" class="img-fluid rounded-start" alt="...">
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h4 class="card-title">{{course.courseName}}</h4>
+            <p class="card-text">{{course.courseDescription}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

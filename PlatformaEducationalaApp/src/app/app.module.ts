@@ -10,6 +10,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { BlogPostDetailsComponent } from './blog-post/blog-post-details/blog-post-details.component';
 import { BlogPostEditComponent } from './blog-post/blog-post-edit/blog-post-edit.component';
 import { BlogPostCreateComponent } from './blog-post/blog-post-create/blog-post-create.component';
+import { CourseComponent } from './course/course.component';
+import { CourseEditComponent } from './course/course-edit/course-edit.component';
+import { CourseListComponent } from './course/course-list/course-list.component';
+import { CourseCreateComponent } from './course/course-create/course-create.component';
+import { UserComponent } from './user/user.component';
+import { UserLoginComponent } from './user/user-login/user-login.component';
+import { UserRegisterComponent } from './user/user-register/user-register.component';
+import { EnrollmentsComponent } from './course/enrollments/enrollments.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +26,15 @@ import { BlogPostCreateComponent } from './blog-post/blog-post-create/blog-post-
     BlogPostListComponent,
     BlogPostDetailsComponent,
     BlogPostEditComponent,
-    BlogPostCreateComponent
+    BlogPostCreateComponent,
+    CourseComponent,
+    CourseEditComponent,
+    CourseListComponent,
+    CourseCreateComponent,
+    UserComponent,
+    UserLoginComponent,
+    UserRegisterComponent,
+    EnrollmentsComponent
   ],
   imports: [
     BrowserModule,

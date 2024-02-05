@@ -14,9 +14,9 @@ export class BlogPostEditComponent implements OnInit {
 
   blogPostForm = new FormGroup({
     blogPostId: new FormControl(''),
-    blogPostTitle: new FormControl(''),
-    blogPostContent: new FormControl(''),
-    blogPostImage: new FormControl(''),
+    title: new FormControl(''),
+    content: new FormControl(''),
+    imageUrl: new FormControl(''),
   });
 
   constructor(
@@ -38,11 +38,16 @@ export class BlogPostEditComponent implements OnInit {
           const post = response.body as BlogPost; // Type assertion to cast response body to BlogPost
           this.blogPost = post;
 
+          //check if the user is the owner of the post
+          if (this.blogPost.userId != this.blogPostService.loggedInUserId) {
+            this.router.navigate(['/blogpost']);
+          }
+
           this.blogPostForm.setValue({
             blogPostId: post.blogPostId.toString(), // Convert the number to a string
-            blogPostTitle: post.title,
-            blogPostContent: post.content,
-            blogPostImage: post.imageUrl,
+            title: post.title,
+            content: post.content,
+            imageUrl: post.imageUrl,
           });
         },
         (error) => {
@@ -54,16 +59,33 @@ export class BlogPostEditComponent implements OnInit {
   }
 
   onSubmit() {
-    const formValues = this.blogPostForm.value;
-    const updatedPost = {
-      id: Number(this.route.snapshot.paramMap.get('id')), // Convert id to number using the Number function
-      blogPostTitle: formValues.blogPostTitle || '', // Ensure blogPostTitle is always a string
-      blogPostContent: formValues.blogPostContent || '',
-      blogPostImage: formValues.blogPostImage || ''
-    };
+    if (this.blogPostForm.valid) {
+      const updatedPost: BlogPost = {
+        blogPostId: Number(this.blogPostForm.value.blogPostId),
+        title: this.blogPostForm.value.title ?? '',
+        content: this.blogPostForm.value.content ?? '',
+        imageUrl: this.blogPostForm.value.imageUrl ?? '',
+      };
 
-    this.blogPostService.updatePost(updatedPost).subscribe(() => {
-      this.router.navigate(['/blogpost/' + this.blogPostForm.value.blogPostId]);
-    });
+      this.blogPostService.updatePost(updatedPost).subscribe(
+        (response) => {
+          this.router.navigate(['/blogpost']);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+  }
+
+  onDelete() {
+    this.blogPostService.deleteBlogPost(this.blogPost.blogPostId).subscribe(
+      (response) => {
+        this.router.navigate(['/blogpost']);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 }

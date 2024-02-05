@@ -8,17 +8,17 @@
 
     <div class="mb-3">
         <label for="BlogPostTitle" class="form-label">Blog Post Title</label>
-        <input type="text" class="form-control" formControlName="blogPostTitle">
+        <input type="text" class="form-control" formControlName="title">
     </div>
 
     <div class="mb-3">
         <label for="BlogPostContent" class="form-label">BlogPost Content</label>
-        <textarea class="form-control" rows="20" formControlName="blogPostContent">@ViewBag.Post.Content</textarea>
+        <textarea class="form-control" rows="20" formControlName="content">@ViewBag.Post.Content</textarea>
     </div>
 
     <div class="b-3">
         <label for="BlogPostImage" class="form-label">Blog Post Image</label>
-        <input type="text" class="form-control" formControlName="blogPostImage" />
+        <input type="text" class="form-control" formControlName="imageUrl" />
     </div>
 
     <style>
@@ -29,3 +29,5 @@
 
     <button class="btn btn-primary w-10 py-2" type="submit">Modify</button>
 </form>
+
+<button (click)="onDelete()" class="btn btn-danger">Delete Post</button>

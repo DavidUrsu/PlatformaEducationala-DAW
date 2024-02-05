@@ -18,6 +18,23 @@ namespace PlatformaEducationalaAPI.Controllers
 			_userService = userService;
 		}
 
+		//get the details of the user
+		[HttpGet]
+		public IActionResult GetUser()
+		{
+			var UserId = Request.Cookies["id"];
+			// Check if the user is logged in
+			if (UserId == null)
+			{
+				return Unauthorized();
+			}
+			else
+			{
+				var user = _userService.GetUserById(int.Parse(UserId));
+				return Ok(user);
+			}
+		}
+
 		// logout
 		[HttpPost("logout")]
 		public IActionResult Logout()

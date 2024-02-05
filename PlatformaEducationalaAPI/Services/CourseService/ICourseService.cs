@@ -7,7 +7,7 @@ namespace PlatformaEducationalaAPI.Services.CourseService
 		IEnumerable<CourseDTO> GetAllCourses();
 		IEnumerable<int> GetTheIdOfCourses(IEnumerable<CourseDTO> Courses);
 		IEnumerable<int> GetTheIdOfEnrolledCourses(int id);
-		Course GetCourseById(int id);
+		CourseDTO GetCourseById(int id);
 		void deleteCourseEnrollment(int id);
 		void deleteCourse(int id);
 		void UpdateCourse(CourseDTO updatedCourse);

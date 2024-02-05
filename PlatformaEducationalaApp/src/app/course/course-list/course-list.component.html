@@ -1,0 +1,27 @@
+<h1>Courses</h1>
+
+<div class="courses">
+  <div *ngFor="let course of service.list" class="card mb-3" style="max-width: 540px;">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img [src]="course.courseImage" class="img-fluid rounded-start" alt="...">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h4 class="card-title">{{course.courseName}}</h4>
+          <h3 class="pricing-card-title" *ngIf="course.courseSalePrice < course.coursePrice">
+            <del>&euro;{{course.coursePrice}}</del> &euro;{{course.courseSalePrice}}
+          </h3>
+          <h3 class="pricing-card-title" *ngIf="course.courseSalePrice >= course.coursePrice">
+            &euro;{{course.coursePrice}}
+          </h3>
+          <p class="card-text">{{course.courseDescription}}</p>
+          <p class="card-text"><small class="text-body-secondary">Created on {{course.courseDate | slice:0:10}}</small></p>
+          <button *ngIf="service.loggedInUserId === course.professorUserId" (click)="editCourse(course.courseId)" class="btn btn-primary">Edit Course</button>
+          <button *ngIf="essentialService.isUserLoggedIn() && enrolledCourses.includes(course.courseId)" (click)="unenrollCourse(course.courseId)" class="btn btn-danger">Unenroll</button>
+          <button *ngIf="essentialService.isUserLoggedIn() && !enrolledCourses.includes(course.courseId)" (click)="enrollCourse(course.courseId)" class="btn btn-success">Enroll</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

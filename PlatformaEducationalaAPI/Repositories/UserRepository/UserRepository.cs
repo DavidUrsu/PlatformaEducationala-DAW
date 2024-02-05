@@ -17,9 +17,10 @@ namespace PlatformaEducationalaAPI.Repositories.UserRepository
 			_context.SaveChanges();
 		}
 
-		public void DeleteUser(User user)
+		public void DeleteUser(UserDTO user)
 		{
-			_context.Users.Remove(user);
+			var userToDelete = _context.Users.Find(user.UserId);
+			_context.Users.Remove(userToDelete);
 			_context.SaveChanges();
 		}
 
@@ -28,14 +29,26 @@ namespace PlatformaEducationalaAPI.Repositories.UserRepository
 			return _context.Users.FirstOrDefault(u => u.Email == email);
 		}
 
-		public User GetUserById(int id)
+		public UserDTO GetUserById(int id)
 		{
-			return _context.Users.Find(id);
+			var user = _context.Users.FirstOrDefault(u => u.UserId == id);
+			if (user == null)
+			{
+				return null;
+			}
+			return new UserDTO
+			{
+				UserId = user.UserId,
+				Username = user.Username,
+				Email = user.Email,
+				Role = user.Role
+			};
 		}
 
 		public void ChangeEmail(int id, string email)
 		{
-			GetUserById(id).Email = email;
+			var user = _context.Users.Find(id);
+			user.Email = email;
 			_context.SaveChanges();
 		}
 

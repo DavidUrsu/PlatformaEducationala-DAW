@@ -3,17 +3,17 @@
 <form [formGroup]="blogPostForm" (ngSubmit)="onSubmit()">
     <div class="mb-3">
         <label for="BlogPostTitle" class="form-label">Blog Post Title</label>
-        <input type="text" class="form-control" formControlName="blogPostTitle">
+        <input type="text" class="form-control" formControlName="title">
     </div>
 
     <div class="mb-3">
         <label for="BlogPostContent" class="form-label">Blog Post Content</label>
-        <textarea class="form-control" rows="20" formControlName="blogPostContent"></textarea>
+        <textarea class="form-control" rows="20" formControlName="content"></textarea>
     </div>
 
     <div class="mb-3">
         <label for="BlogPostImage" class="form-label">Blog Post Image</label>
-        <input type="text" class="form-control" formControlName="blogPostImage" />
+        <input type="text" class="form-control" formControlName="imageUrl" />
     </div>
 
     <style>

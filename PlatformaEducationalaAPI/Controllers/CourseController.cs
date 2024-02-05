@@ -83,6 +83,18 @@ namespace PlatformaEducationalaAPI.Controllers
 			}
 		}
 
+		//get a course by id
+		[HttpGet("{id}")]
+		public ActionResult<CourseDTO> GetCourseById(int id)
+		{
+			var course = _service.GetCourseById(id);
+			if (course == null)
+			{
+				return NotFound();
+			}
+			return Ok(course);
+		}
+
 		//edit course post
 		[HttpPut]
 		public IActionResult Edit(CourseDTO editedCourse)

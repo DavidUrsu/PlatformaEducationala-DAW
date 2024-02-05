@@ -6,7 +6,7 @@ namespace PlatformaEducationalaAPI.Repositories.CourseRepository
 	{
 		IEnumerable<CourseDTO> GetAllCourses();
 		IEnumerable<CourseDTO> GetEnrolledCoursesByUserId(int id);
-		Course GetCourseById(int id);
+		CourseDTO GetCourseById(int id);
 		void DeleteCourse(int id);
 		IEnumerable<Enrollment> GetEnrollmentsByCourseId(int id);
 		void DeleteEnrollment(Enrollment enrollment);

@@ -29,14 +29,31 @@ namespace PlatformaEducationalaAPI.Repositories.CourseRepository
 			}).ToList();
 		}
 
-		public Course GetCourseById(int id)
+		public CourseDTO GetCourseById(int id)
 		{
-			return _context.Courses.Find(id);
+			var course = _context.Courses.FirstOrDefault(c => c.CourseId == id);
+			if (course == null)
+			{
+				return null;
+			}
+
+			return new CourseDTO
+			{
+				CourseId = course.CourseId,
+				CourseName = course.CourseName,
+				CourseDescription = course.CourseDescription,
+				CoursePrice = course.CoursePrice,
+				CourseSalePrice = course.CourseSalePrice,
+				CourseImage = course.CourseImage,
+				ProfessorUserId = course.ProfessorUserId,
+				ProfessorName = _context.Users.FirstOrDefault(u => u.UserId == course.ProfessorUserId).Username,
+				CourseDate = course.CourseDate
+			};
 		}
 
 		public void DeleteCourse(int id)
 		{
-			var course = GetCourseById(id);
+			var course = _context.Courses.FirstOrDefault(c => c.CourseId == id);
 			if (course != null)
 			{
 				_context.Courses.Remove(course);
@@ -85,7 +102,7 @@ namespace PlatformaEducationalaAPI.Repositories.CourseRepository
 
 		public void UpdateCourse(CourseDTO updatedCourse)
 		{
-			var existingCourse = GetCourseById(updatedCourse.CourseId);
+			var existingCourse = _context.Courses.FirstOrDefault(c => c.CourseId == updatedCourse.CourseId);
 			if (existingCourse != null)
 			{
 				existingCourse.CourseName = updatedCourse.CourseName;

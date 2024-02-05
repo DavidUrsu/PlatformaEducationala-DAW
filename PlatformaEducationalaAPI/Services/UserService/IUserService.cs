@@ -5,7 +5,7 @@ namespace PlatformaEducationalaAPI.Services.UserService
 	public interface IUserService
 	{
 		// Returns the a User object by id
-		User GetUserById(int id);
+		UserDTO GetUserById(int id);
 
 		// Deletes the each course of the user by the id of the user
 		void DeleteCoursesOfUser(int id);

@@ -3,7 +3,7 @@ export class BlogPost {
   title: string = '';
   content: string = '';
   imageUrl: string = '';
-  datePosted: string = '';
-  userId: number = 0;
-  user: null = null;
+  datePosted?: string = '';
+  userId?: number = 0;
+  username?: string = '';
 }

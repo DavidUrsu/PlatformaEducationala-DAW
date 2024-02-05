@@ -3,7 +3,6 @@ using PlatformaEducationalaAPI.Repositories.CourseRepository;
 using PlatformaEducationalaAPI.Repositories.UserRepository;
 using PlatformaEducationalaAPI.Services.CourseService;
 using System.Text;
-using System.Text;
 using System.Security.Cryptography;
 using PlatformaEducationalaAPI.Services.BlogPostService;
 using PlatformaEducationalaAPI.Repositories.BlogPostRepository;
@@ -121,7 +120,7 @@ namespace PlatformaEducationalaAPI.Services.UserService
 			return _courseRepository.GetEnrolledCoursesByUserId(id);
 		}
 
-		public User GetUserById(int id)
+		public UserDTO GetUserById(int id)
 		{
 			return _userRepository.GetUserById(id);
 		}
